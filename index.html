@@ -241,9 +241,14 @@
                 }
             }
 
+            let stopContinuous = false;
+            setTimeout(() => stopContinuous = true, 5000); // Stop continuous confetti after 5 seconds
+
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                continuousConfetti();
+                if (!stopContinuous) {
+                    continuousConfetti();
+                }
 
                 particles = particles.filter(p => p.opacity > 0 && p.y < canvas.height + 50);
 
@@ -287,7 +292,7 @@
             const container = document.getElementById('particles');
             const emojis = ['✨', '⭐', '🌟', '💫', '🎂', '🎁', '🎈', '🎀', '💖'];
 
-            setInterval(() => {
+            const particleInterval = setInterval(() => {
                 const particle = document.createElement('div');
                 particle.className = 'floating-particle';
                 particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
@@ -298,6 +303,9 @@
                 container.appendChild(particle);
                 setTimeout(() => particle.remove(), 10000);
             }, 600);
+
+            // Stop generating floating particles after 8 seconds
+            setTimeout(() => clearInterval(particleInterval), 5000);
         }
 
         // ===== TYPEWRITER EFFECT =====
