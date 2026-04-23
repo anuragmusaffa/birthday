@@ -1,61 +1,387 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>Happy Birthday</title>
+    <title>Happy Birthday Pranjal 🎂</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <meta name="description" content="A special birthday wish for Pranjal">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="loader">
-                <button id="play">Start</button>
+    <!-- Landing / Start Screen -->
+    <div id="landing-screen">
+        <canvas id="stars-canvas"></canvas>
+        <div class="landing-content">
+            <div class="envelope" id="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body">
+                    <div class="envelope-letter">🎂</div>
+                </div>
             </div>
+            <p class="landing-subtitle">You've received a special message</p>
+            <button id="start-btn">
+                <span>Open</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
         </div>
     </div>
-    <audio class="song" controls loop>
-        <source src="music.mp3">
-        </source>
-        Your browser isn't invited for super fun audio time.
+
+    <!-- Main Birthday Content -->
+    <div id="main-content" class="hidden">
+        <canvas id="confetti-canvas"></canvas>
+        
+        <!-- Floating particles -->
+        <div id="particles"></div>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="glow-orb orb-1"></div>
+            <div class="glow-orb orb-2"></div>
+            <div class="glow-orb orb-3"></div>
+
+            <div class="hero-text-container">
+                <p class="hero-pre-text animate-fade-up">✨ Today is special ✨</p>
+                <h1 class="hero-title animate-fade-up delay-1">
+                    Happy Birthday
+                </h1>
+                <h2 class="hero-name animate-fade-up delay-2">Pranjal</h2>
+                <div class="divider animate-fade-up delay-3">
+                    <span class="divider-star">⭐</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Message Section -->
+        <section class="message-section">
+            <div class="message-card animate-on-scroll">
+                <div class="card-glow"></div>
+                <div class="message-icon">💌</div>
+                <div id="typewriter-container">
+                    <p id="typewriter-text"></p>
+                    <span class="cursor">|</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wishes Section -->
+        <section class="wishes-section">
+            <h3 class="section-title animate-on-scroll">Wishing You</h3>
+            <div class="wishes-grid">
+                <div class="wish-card animate-on-scroll" style="--delay: 0.1s">
+                    <div class="wish-icon">🌟</div>
+                    <h4>Endless Joy</h4>
+                    <p>May every moment bring you pure happiness and laughter</p>
+                </div>
+                <div class="wish-card animate-on-scroll" style="--delay: 0.2s">
+                    <div class="wish-icon">💫</div>
+                    <h4>Big Dreams</h4>
+                    <p>May all your dreams and aspirations come true this year</p>
+                </div>
+                <div class="wish-card animate-on-scroll" style="--delay: 0.3s">
+                    <div class="wish-icon">❤️</div>
+                    <h4>Love & Peace</h4>
+                    <p>May you be surrounded by love and warmth always</p>
+                </div>
+                <div class="wish-card animate-on-scroll" style="--delay: 0.4s">
+                    <div class="wish-icon">🎯</div>
+                    <h4>Great Success</h4>
+                    <p>May success follow you in everything you do</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cake Section -->
+        <section class="cake-section">
+            <div class="cake-container animate-on-scroll">
+                <div class="cake-glow"></div>
+                <img src="img/cake.gif" alt="Birthday Cake" class="cake-img">
+                <p class="cake-text">Make a wish & blow the candles! 🕯️</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="birthday-footer">
+            <div class="footer-stars"></div>
+            <p class="footer-text">
+                Made with <span class="heart">❤️</span> just for you
+            </p>
+            <p class="footer-name">Happy Birthday Pranjal! 🎉</p>
+        </footer>
+    </div>
+
+    <!-- Audio -->
+    <audio id="bg-music" loop>
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
-    <canvas id="confetti"></canvas>
-    <div class="main">
-        <div class="container pt-5">
-            <div class="row">
 
-                <div class="col-12 col-xl-6 mx-auto">
-                    <img src="img/banner.png" alt="">
-                </div>
+    <!-- Music Toggle -->
+    <button id="music-toggle" class="hidden" title="Toggle Music">
+        <svg id="music-on-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        </svg>
+        <svg id="music-off-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+        </svg>
+    </button>
 
-                <div class="col-12  text-center">
-                    <div id="name" class="area">Pranjal</div>
-                </div>
+    <script src="js/jquery.min.js"></script>
+    <script>
+    // ===== CONFIGURATION =====
+    const BIRTHDAY_NAME = "Pranjal";
+    const MESSAGES = [
+        `Dear ${BIRTHDAY_NAME},`,
+        "Wishing you the most amazing birthday filled with love, laughter, and all the things that make you happiest.",
+        "May this new year of your life bring incredible adventures, beautiful memories, and dreams fulfilled.",
+        "You deserve nothing but the best. Cheers to you! 🥂"
+    ];
 
-                <div class="col-12 text-center">
-                    <div class="type-wrap">
-                        <div id="typed-strings" class="typing">
-                            <h2>Happy Birthday <i id="nae">Pranjal</i></h2>
-                            <h2>Have a wonderful day</h2>
-                            <h2>Filled with joy and happiness.</h2>
-                        </div>
-                        <span id="typed" style="white-space:pre;"></span>
-                    </div>
-                </div>
+    // ===== STARS CANVAS (Landing) =====
+    function initStars() {
+        const canvas = document.getElementById('stars-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
 
-                <div class="col-12 col-xl-3 cake">
-                    <img src="img/cake.gif" alt="">
-                </div>
-            </div>
-        </div>
-        <img src="img/Balloon-Border.png" width="100%" class="balloon-border">
-    </div>
+        for (let i = 0; i < 200; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2 + 0.5,
+                speed: Math.random() * 0.5 + 0.1,
+                opacity: Math.random(),
+                flickerSpeed: Math.random() * 0.02 + 0.005
+            });
+        }
+
+        function drawStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => {
+                star.opacity += star.flickerSpeed;
+                if (star.opacity > 1 || star.opacity < 0.2) star.flickerSpeed *= -1;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.fill();
+            });
+            requestAnimationFrame(drawStars);
+        }
+        drawStars();
+    }
+
+    // ===== CONFETTI SYSTEM =====
+    function initConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff', '#ff6eb4', '#c084fc', '#fbbf24', '#34d399'];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        function createBurst(count = 150) {
+            for (let i = 0; i < count; i++) {
+                const angle = (Math.PI * 2 * i) / count;
+                const velocity = Math.random() * 8 + 4;
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: Math.cos(angle) * velocity * (Math.random() * 0.5 + 0.75),
+                    vy: Math.sin(angle) * velocity * (Math.random() * 0.5 + 0.75) - 3,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 3,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 10 - 5,
+                    gravity: 0.12,
+                    drag: 0.98,
+                    opacity: 1,
+                    fadeSpeed: Math.random() * 0.008 + 0.003,
+                    shape: Math.random() > 0.5 ? 'rect' : 'circle'
+                });
+            }
+        }
+
+        function continuousConfetti() {
+            for (let i = 0; i < 3; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: -10,
+                    vx: Math.random() * 2 - 1,
+                    vy: Math.random() * 2 + 1,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 6 + 2,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: Math.random() * 6 - 3,
+                    gravity: 0.04,
+                    drag: 0.99,
+                    opacity: 1,
+                    fadeSpeed: 0.001,
+                    shape: Math.random() > 0.5 ? 'rect' : 'circle'
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            continuousConfetti();
+
+            particles = particles.filter(p => p.opacity > 0 && p.y < canvas.height + 50);
+
+            particles.forEach(p => {
+                p.vy += p.gravity;
+                p.vx *= p.drag;
+                p.vy *= p.drag;
+                p.x += p.vx;
+                p.y += p.vy;
+                p.rotation += p.rotationSpeed;
+                if (p.y > canvas.height * 0.7) p.opacity -= p.fadeSpeed * 3;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.globalAlpha = p.opacity;
+                ctx.fillStyle = p.color;
+
+                if (p.shape === 'rect') {
+                    ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        // Initial burst
+        setTimeout(() => createBurst(200), 500);
+        setTimeout(() => createBurst(100), 1500);
+        setTimeout(() => createBurst(80), 2800);
+        animate();
+    }
+
+    // ===== FLOATING PARTICLES =====
+    function createFloatingParticles() {
+        const container = document.getElementById('particles');
+        const emojis = ['✨', '⭐', '🌟', '💫', '🎂', '🎁', '🎈', '🎀', '💖'];
+        
+        setInterval(() => {
+            const particle = document.createElement('div');
+            particle.className = 'floating-particle';
+            particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            particle.style.fontSize = (Math.random() * 16 + 12) + 'px';
+            particle.style.opacity = Math.random() * 0.6 + 0.3;
+            container.appendChild(particle);
+            setTimeout(() => particle.remove(), 10000);
+        }, 600);
+    }
+
+    // ===== TYPEWRITER EFFECT =====
+    function typeWriter(element, messages, msgIndex = 0, charIndex = 0) {
+        if (msgIndex >= messages.length) return;
+
+        const currentMsg = messages[msgIndex];
+        
+        if (charIndex === 0 && msgIndex > 0) {
+            element.innerHTML += '<br><br>';
+        }
+
+        if (charIndex < currentMsg.length) {
+            element.innerHTML += currentMsg.charAt(charIndex);
+            setTimeout(() => typeWriter(element, messages, msgIndex, charIndex + 1), 40);
+        } else {
+            setTimeout(() => typeWriter(element, messages, msgIndex + 1, 0), 800);
+        }
+    }
+
+    // ===== SCROLL ANIMATIONS =====
+    function initScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+    }
+
+    // ===== MUSIC CONTROL =====
+    const music = document.getElementById('bg-music');
+    const musicToggle = document.getElementById('music-toggle');
+    const musicOnIcon = document.getElementById('music-on-icon');
+    const musicOffIcon = document.getElementById('music-off-icon');
+    let isMusicPlaying = false;
+
+    musicToggle.addEventListener('click', () => {
+        if (isMusicPlaying) {
+            music.pause();
+            musicOnIcon.style.display = 'none';
+            musicOffIcon.style.display = 'block';
+        } else {
+            music.play();
+            musicOnIcon.style.display = 'block';
+            musicOffIcon.style.display = 'none';
+        }
+        isMusicPlaying = !isMusicPlaying;
+    });
+
+    // ===== START EXPERIENCE =====
+    initStars();
+
+    document.getElementById('start-btn').addEventListener('click', () => {
+        const landing = document.getElementById('landing-screen');
+        const main = document.getElementById('main-content');
+        
+        landing.classList.add('fade-out');
+        
+        setTimeout(() => {
+            landing.style.display = 'none';
+            main.classList.remove('hidden');
+            main.classList.add('fade-in');
+            musicToggle.classList.remove('hidden');
+
+            // Start music
+            music.play().then(() => {
+                isMusicPlaying = true;
+                musicOnIcon.style.display = 'block';
+                musicOffIcon.style.display = 'none';
+            }).catch(() => {});
+
+            // Start effects
+            initConfetti();
+            createFloatingParticles();
+            initScrollAnimations();
+
+            // Start typewriter after a delay
+            setTimeout(() => {
+                typeWriter(document.getElementById('typewriter-text'), MESSAGES);
+            }, 1500);
+
+        }, 800);
+    });
+    </script>
 </body>
-<script src="https://unpkg.com/magic-snowflakes/dist/snowflakes.min.js"></script>
-<script src="js/jquery.js"></script>
-<script src="js/typed.min.js"></script>
-<script src="js/script.js"></script>
-
 </html>
