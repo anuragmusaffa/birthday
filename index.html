@@ -243,10 +243,7 @@
 
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                if (confettiActive) {
-                    continuousConfetti();
-                }
+                continuousConfetti();
 
                 particles = particles.filter(p => p.opacity > 0 && p.y < canvas.height + 50);
 
@@ -257,10 +254,7 @@
                     p.x += p.vx;
                     p.y += p.vy;
                     p.rotation += p.rotationSpeed;
-
-                    if (p.y > canvas.height * 0.7) {
-                        p.opacity -= p.fadeSpeed * 3;
-                    }
+                    if (p.y > canvas.height * 0.7) p.opacity -= p.fadeSpeed * 3;
 
                     ctx.save();
                     ctx.translate(p.x, p.y);
@@ -275,17 +269,11 @@
                         ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
                         ctx.fill();
                     }
-
                     ctx.restore();
                 });
 
                 requestAnimationFrame(animate);
             }
-
-            // ⛔ Stop continuous confetti after 5 seconds
-            setTimeout(() => {
-                confettiActive = false;
-            }, 5000);
 
             // Initial burst
             setTimeout(() => createBurst(200), 500);
